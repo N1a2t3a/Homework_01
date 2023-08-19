@@ -49,8 +49,7 @@ class AddressBookApp:
             choice = input("Enter your choice: ")
 
             if choice == "1":
-                contacts = list(self.address_book.values())
-                self.ui.display_contacts(contacts)
+                self.address_book.print_contacts(self.ui)
             elif choice == "2":
                 self.add_contact()
             elif choice == "3":
@@ -375,6 +374,10 @@ class AddressBook(UserDict):
             current_index += N
             yield batch
 
+    def print_contacts(self, ui):
+        contacts = list(self.data.values())
+        ui.display_contacts(contacts)
+
 
 class PhoneException(Exception):
     def __init__(self, message):
@@ -407,4 +410,16 @@ class EmailException(Exception):
 if __name__ == "__main__":
     console_ui = ConsoleInterface()
     app = AddressBookApp(console_ui)
+    
+    name = Name("John Doe")
+    phone = Phone("+123456789")
+    email = Email("john@example.com")
+    birthday = Birthday("15.08.1990")
+    address = Address("123 Main St, City")
+    
+    record = Record(name, phones=phone, email=email, birthday=birthday, address=address)
+    
+    address_book = AddressBook()
+    address_book.add_record(record)
+    
     app.run()
